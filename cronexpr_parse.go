@@ -188,6 +188,7 @@ var (
 	layoutValueAndInterval    = `^(%value%)/(\d+)$`
 	layoutRangeAndInterval    = `^(%value%)-(%value%)/(\d+)$`
 	layoutLastDom             = `^l$`
+	layoutLastMinusN          = `^l-(%value%)$`
 	layoutWorkdom             = `^(%value%)w$`
 	layoutLastWorkdom         = `^lw$`
 	layoutDowOfLastWeek       = `^(%value%)l$`
@@ -286,7 +287,6 @@ func genericFieldHandler(s string, desc fieldDescriptor) ([]int, error) {
 	}
 	return toList(values), nil
 }
-
 func (expr *Expression) dowFieldHandler(s string) error {
 	expr.daysOfWeekRestricted = true
 	expr.daysOfWeek = make(map[int]bool)
@@ -358,7 +358,14 @@ func (expr *Expression) domFieldHandler(s string) error {
 					if len(pairs) > 0 {
 						populateOne(expr.workdaysOfMonth, domDescriptor.atoi(snormal[pairs[2]:pairs[3]]))
 					} else {
-						return fmt.Errorf("syntax error in day-of-month field: '%s'", sdirective)
+						// `L-n days of month`
+						if makeLayoutRegexp(layoutLastMinusN, domDescriptor.valuePattern).MatchString(snormal) {
+							expr.isLastMinusNDays = true
+							expr.lastMinusNDay = domDescriptor.atoi(strings.Split(snormal, "-")[1])
+						} else {
+							return fmt.Errorf("syntax error in day-of-month field: '%s'", sdirective)
+						}
+
 					}
 				}
 			}
