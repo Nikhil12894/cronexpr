@@ -18,7 +18,7 @@ The reference documentation for this implementation is found at
     Seconds        No           0-59              * / , -
     Minutes        Yes          0-59              * / , -
     Hours          Yes          0-23              * / , -
-    Day of month   Yes          1-31              * / , - L W
+    Day of month   Yes          1-31              * / , - L W (L-N this Represent Last minus N days) 
     Month          Yes          1-12 or JAN-DEC   * / , -
     Day of week    Yes          0-6 or SUN-SAT    * / , - L #
     Year           No           1970–2099         * / , -
@@ -37,6 +37,9 @@ Hyphens define ranges. For example, 2000-2010 indicates every year between 2000 
 
 #### L
 `L` stands for "last". When used in the day-of-week field, it allows you to specify constructs such as "the last Friday" (`5L`) of a given month. In the day-of-month field, it specifies the last day of the month.
+
+#### L-N
+`L-N` stands for "last minus N Days".When used In the day-of-month field, it specifies the last - n day of the month (`'0 0 12 L-2 * ? *'--> Description: At 12:00, 2 days before the last day of the month`).
 
 #### W
 The `W` character is allowed for the day-of-month field. This character is used to specify the business day (Monday-Friday) nearest the given day. As an example, if you were to specify `15W` as the value for the day-of-month field, the meaning is: "the nearest business day to the 15th of the month."
