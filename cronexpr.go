@@ -33,6 +33,8 @@ type Expression struct {
 	daysOfMonth            map[int]bool
 	workdaysOfMonth        map[int]bool
 	lastDayOfMonth         bool
+	isLastMinusNDays       bool
+	lastMinusNDay          int
 	lastWorkdayOfMonth     bool
 	daysOfMonthRestricted  bool
 	actualDaysOfMonthList  []int
