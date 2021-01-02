@@ -36,7 +36,6 @@ var (
 /******************************************************************************/
 
 func main() {
-	fmt.Println("updated")
 	var err error
 
 	flag.Usage = usage
